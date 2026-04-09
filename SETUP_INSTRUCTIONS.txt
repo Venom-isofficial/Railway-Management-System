@@ -1,0 +1,196 @@
+================================================================================
+   INVENTORY MANAGEMENT SYSTEM - SETUP INSTRUCTIONS FOR NEW PC
+================================================================================
+
+📋 PREREQUISITES (Install these first):
+----------------------------------------
+1. PostgreSQL (Database)
+   Download: https://www.postgresql.org/download/windows/
+   During installation:
+   - Remember the password you set for 'postgres' user
+   - Default port: 5432 (keep this)
+   - Add PostgreSQL to PATH when asked
+
+2. Node.js (Runtime)
+   Download: https://nodejs.org/ (Get LTS version)
+   Default installation is fine
+
+3. Git (Optional - if cloning from repository)
+   Download: https://git-scm.com/download/win
+
+
+📦 INSTALLATION STEPS:
+----------------------------------------
+
+METHOD 1: AUTOMATIC SETUP (Recommended)
+========================================
+
+1. Copy the entire project folder to your new PC
+   Example: C:\Users\YourName\Desktop\shweta
+
+2. Right-click on SETUP.bat → Run as Administrator
+
+3. When prompted, enter your PostgreSQL password
+   (The password you set during PostgreSQL installation)
+   The script will automatically create the .env file for you!
+
+4. Choose "Y" to add sample data (recommended for testing)
+
+5. Setup complete! 
+
+
+METHOD 2: MANUAL SETUP
+========================================
+
+Step 1: Install Dependencies
+-----------------------------
+cd C:\path\to\shweta
+
+REM Clean old packages if any
+rmdir /s /q node_modules 2>nul
+del /f /q package-lock.json 2>nul
+rmdir /s /q client\node_modules 2>nul
+del /f /q client\package-lock.json 2>nul
+
+REM Install fresh packages
+npm install
+cd client
+npm install
+cd ..
+
+
+Step 2: Configure Environment
+-----------------------------
+- Copy .env.example to .env
+- Edit .env file
+- Change DB_PASSWORD=YOUR_POSTGRES_PASSWORD_HERE to your actual password
+
+
+Step 3: Create Database
+-----------------------------
+Open Command Prompt:
+psql -U postgres
+(Enter your PostgreSQL password)
+
+In PostgreSQL shell:
+CREATE DATABASE inventory_db;
+\q
+
+
+Step 4: Load Database Schema
+-----------------------------
+psql -U postgres -d inventory_db -f server\database\schema.sql
+
+
+Step 5: Add Sample Data (Optional)
+-----------------------------
+node server\seeds\seed.js
+
+
+🚀 STARTING THE APPLICATION:
+----------------------------------------
+
+Option 1: Double-click START.bat
+
+Option 2: Command line
+cd C:\path\to\shweta
+npm run dev
+
+
+📱 ACCESSING THE APPLICATION:
+----------------------------------------
+Frontend: http://localhost:3000
+Backend API: http://localhost:5000/api
+
+Default Login:
+Email: admin@inventory.com
+Password: Admin@123
+
+
+⚙️ CONFIGURATION GUIDE:
+----------------------------------------
+
+⚠️ MUST CHANGE IN .env FILE:
+-----------------------------
+DB_PASSWORD=your_actual_postgres_password
+
+
+🔒 RECOMMENDED TO CHANGE (for production):
+-----------------------------
+JWT_SECRET=your_super_secret_random_string
+(Use a long random string - at least 32 characters)
+
+
+📧 OPTIONAL EMAIL SETUP (for password reset):
+-----------------------------
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-gmail-app-password
+EMAIL_FROM=noreply@inventory.com
+
+For Gmail:
+1. Enable 2-factor authentication
+2. Generate App Password: https://myaccount.google.com/apppasswords
+3. Use that app password in SMTP_PASS
+
+
+🛠️ TROUBLESHOOTING:
+----------------------------------------
+
+Problem: "PostgreSQL is not installed or not in PATH"
+Solution: Add PostgreSQL to system PATH:
+1. Search "Environment Variables" in Windows
+2. Edit System Variables → Path
+3. Add: C:\Program Files\PostgreSQL\16\bin
+4. Restart terminal
+
+Problem: "Failed to create database - password authentication failed"
+Solution: Check your PostgreSQL password
+- Try connecting manually: psql -U postgres
+- Reset password if needed
+
+Problem: "Port 3000 or 5000 already in use"
+Solution: 
+1. Close any other applications using these ports
+2. Or change ports in .env:
+   PORT=5001
+   And in client/package.json change proxy to 5001
+
+Problem: "npm command not found"
+Solution: Reinstall Node.js and ensure "Add to PATH" is checked
+
+Problem: Database connection error
+Solution: 
+1. Check PostgreSQL service is running (Services → PostgreSQL)
+2. Verify credentials in .env file
+3. Test connection: psql -U postgres -d inventory_db
+
+
+📁 IMPORTANT FILES TO CONFIGURE:
+----------------------------------------
+.env - Database password and configuration
+(This is the ONLY file you need to edit for basic setup)
+
+
+💾 BACKING UP DATA:
+----------------------------------------
+Backup database:
+pg_dump -U postgres inventory_db > backup.sql
+
+Restore database:
+psql -U postgres inventory_db < backup.sql
+
+
+📞 QUICK REFERENCE:
+----------------------------------------
+Start Application: START.bat or npm run dev
+Stop Application: Ctrl+C in terminal
+Database Shell: psql -U postgres -d inventory_db
+Check Status: http://localhost:5000/api (should show API info)
+Frontend: http://localhost:3000
+
+
+================================================================================
+For more help, check README.md or contact system administrator
+================================================================================

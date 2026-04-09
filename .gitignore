@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+client/node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Uploads
+uploads/
+!uploads/.gitkeep
+
+# Build
+client/build/
+dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test
+coverage/
+.nyc_output/
+
+# Misc
+*.pem
