@@ -320,7 +320,7 @@ MIT License - see LICENSE file for details
 
 ## 👥 Contributors
 
-- Your Name - Initial work
+- Your Name - Ashish Ranjan
 
 ## 📞 Support
 
